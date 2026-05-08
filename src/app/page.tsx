@@ -114,10 +114,10 @@ export default function Home() {
                 }
 
                 .brand-name {
-                    font-size: 20px;
+                    font-size: 16px;
                     font-weight: 800;
-                    letter-spacing: 6px;
-                    background: linear-gradient(to bottom, #fff, #666);
+                    letter-spacing: 4px;
+                    background: linear-gradient(to bottom, #fff, #888);
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                 }
@@ -152,11 +152,11 @@ export default function Home() {
                 }
 
                 .hero-main-title {
-                    font-size: clamp(48px, 8vw, 84px);
+                    font-size: clamp(36px, 6vw, 60px);
                     font-weight: 800;
-                    line-height: 1;
-                    margin-bottom: 24px;
-                    letter-spacing: -3px;
+                    line-height: 1.1;
+                    margin-bottom: 20px;
+                    letter-spacing: -2px;
                 }
 
                 .gradient-text {
@@ -166,10 +166,10 @@ export default function Home() {
                 }
 
                 .hero-description {
-                    font-size: clamp(16px, 2vw, 20px);
+                    font-size: clamp(14px, 1.5vw, 17px);
                     color: #888;
-                    max-width: 540px;
-                    margin: 0 auto 56px auto;
+                    max-width: 480px;
+                    margin: 0 auto 48px auto;
                     line-height: 1.6;
                 }
 
@@ -183,10 +183,10 @@ export default function Home() {
                 .portal-box {
                     background: rgba(255, 255, 255, 0.03);
                     border: 1px solid rgba(255, 255, 255, 0.05);
-                    padding: 24px;
+                    padding: 18px 24px;
                     display: flex;
                     align-items: center;
-                    gap: 20px;
+                    gap: 16px;
                     text-decoration: none;
                     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
                     text-align: left;
@@ -216,8 +216,8 @@ export default function Home() {
                 .box-icon .material-symbols-outlined { font-size: 24px; color: #fff; }
 
                 .box-info { display: flex; flex-direction: column; }
-                .box-title { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 2px; }
-                .box-desc { font-size: 12px; color: #555; }
+                .box-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+                .box-desc { font-size: 11px; color: #555; }
 
                 .arrow { font-size: 18px; color: #333; margin-left: auto; transition: transform 0.3s ease; }
                 .portal-box:hover .arrow { transform: translateX(4px); color: #fff; }
