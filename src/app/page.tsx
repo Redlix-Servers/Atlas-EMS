@@ -11,14 +11,19 @@ export default function Home() {
             <div className="ambient-glow bottom-left"></div>
 
             <header className="main-nav">
-                <div className="brand-container">
-                    <img src="https://ik.imagekit.io/dypkhqxip/atlasf?updatedAt=1778110387224" alt="Atlas Logo" className="brand-logo" />
-                    <span className="brand-name">ATLAS</span>
+                <div className="nav-container">
+                    <div className="brand-container">
+                        <img src="https://ik.imagekit.io/dypkhqxip/atlasf?updatedAt=1778110387224" alt="Atlas Logo" className="brand-logo" />
+                        <span className="brand-name">ATLAS</span>
+                    </div>
+                    <div className="nav-actions">
+                        <Link href="/employee/login" className="nav-sharp-btn">EMPLOYEE LOGIN</Link>
+                    </div>
                 </div>
             </header>
 
             <main className="hero-section">
-                <div className="hero-box">
+                <div className="hero-left-content">
                     <div className="hero-tag">Enterprise Management Solution</div>
                     <h1 className="hero-main-title">
                         Command your <br />
@@ -36,18 +41,7 @@ export default function Home() {
                             </div>
                             <div className="box-info">
                                 <span className="box-title">Employee Portal</span>
-                                <span className="box-desc">Access your dashboard</span>
-                            </div>
-                            <span className="material-symbols-outlined arrow">arrow_forward</span>
-                        </Link>
-
-                        <Link href="/admin/login" className="portal-box admin">
-                            <div className="box-icon">
-                                <span className="material-symbols-outlined">admin_panel_settings</span>
-                            </div>
-                            <div className="box-info">
-                                <span className="box-title">Admin Access</span>
-                                <span className="box-desc">Manage organization</span>
+                                <span className="box-desc">Access your workspace dashboard</span>
                             </div>
                             <span className="material-symbols-outlined arrow">arrow_forward</span>
                         </Link>
@@ -96,10 +90,19 @@ export default function Home() {
                 .bottom-left { bottom: -200px; left: -200px; }
 
                 .main-nav {
-                    padding: 40px;
+                    padding: 32px 64px;
                     display: flex;
                     justify-content: center;
                     z-index: 10;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                }
+
+                .nav-container {
+                    width: 100%;
+                    max-width: 1200px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
                 }
 
                 .brand-container {
@@ -109,8 +112,8 @@ export default function Home() {
                 }
 
                 .brand-logo {
-                    width: 32px;
-                    height: 32px;
+                    width: 28px;
+                    height: 28px;
                 }
 
                 .brand-name {
@@ -122,18 +125,38 @@ export default function Home() {
                     -webkit-text-fill-color: transparent;
                 }
 
+                .nav-sharp-btn {
+                    background: #fff;
+                    color: #000;
+                    padding: 8px 24px;
+                    font-size: 11px;
+                    font-weight: 800;
+                    letter-spacing: 1px;
+                    text-decoration: none;
+                    border-radius: 0;
+                    transition: all 0.2s ease;
+                }
+
+                .nav-sharp-btn:hover {
+                    background: #7c3aed;
+                    color: #fff;
+                }
+
                 .hero-section {
                     flex: 1;
                     display: flex;
                     align-items: center;
-                    justify-content: center;
-                    padding: 40px 24px;
+                    justify-content: flex-start;
+                    padding: 40px 64px;
                     z-index: 2;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    width: 100%;
                 }
 
-                .hero-box {
-                    max-width: 800px;
-                    text-align: center;
+                .hero-left-content {
+                    max-width: 600px;
+                    text-align: left;
                     animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
                 }
 
@@ -143,7 +166,7 @@ export default function Home() {
                     background: rgba(124, 58, 237, 0.1);
                     color: #7c3aed;
                     border: 1px solid rgba(124, 58, 237, 0.2);
-                    border-radius: 100px;
+                    border-radius: 0;
                     font-size: 11px;
                     font-weight: 700;
                     text-transform: uppercase;
@@ -169,15 +192,16 @@ export default function Home() {
                     font-size: clamp(14px, 1.5vw, 17px);
                     color: #888;
                     max-width: 480px;
-                    margin: 0 auto 48px auto;
                     line-height: 1.6;
+                    margin-bottom: 48px;
                 }
 
                 .portal-grid {
                     display: grid;
-                    grid-template-columns: 1fr 1fr;
+                    grid-template-columns: 1fr;
                     gap: 20px;
                     margin-bottom: 48px;
+                    max-width: 400px;
                 }
 
                 .portal-box {
@@ -192,6 +216,7 @@ export default function Home() {
                     text-align: left;
                     position: relative;
                     overflow: hidden;
+                    border-radius: 0;
                 }
 
                 .portal-box:hover {
@@ -201,7 +226,6 @@ export default function Home() {
                 }
 
                 .portal-box.employee:hover { border-color: rgba(124, 58, 237, 0.4); }
-                .portal-box.admin:hover { border-color: rgba(255, 255, 255, 0.4); }
 
                 .box-icon {
                     width: 48px;
@@ -225,7 +249,7 @@ export default function Home() {
                 .system-status {
                     display: flex;
                     align-items: center;
-                    justify-content: center;
+                    justify-content: flex-start;
                     gap: 10px;
                     opacity: 0.5;
                 }
@@ -234,11 +258,14 @@ export default function Home() {
                 .status-text { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
 
                 .landing-footer {
-                    padding: 40px;
+                    padding: 40px 64px;
                     display: flex;
-                    justify-content: center;
+                    justify-content: flex-start;
                     z-index: 10;
                     border-top: 1px solid rgba(255, 255, 255, 0.03);
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    width: 100%;
                 }
 
                 .powered-by {
@@ -266,13 +293,16 @@ export default function Home() {
                 }
 
                 @media (max-width: 768px) {
-                    .portal-grid { grid-template-columns: 1fr; }
-                    .hero-main-title { letter-spacing: -1px; }
+                    .hero-section { padding: 40px 24px; }
                     .main-nav { padding: 32px 24px; }
                     .landing-footer { padding: 32px 24px; }
+                    .hero-left-content { text-align: center; margin: 0 auto; }
+                    .system-status { justify-content: center; }
+                    .portal-grid { margin: 0 auto 48px auto; }
                 }
             `}</style>
         </div>
     );
+}
 }
 
