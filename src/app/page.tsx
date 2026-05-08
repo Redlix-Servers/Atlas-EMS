@@ -276,11 +276,19 @@ export default function Home() {
                 }
 
                 @media (max-width: 1024px) {
-                    .hero { flex-direction: column; text-align: center; padding: 32px; }
+                    .hero { flex-direction: column; text-align: center; padding: 48px 24px; }
                     .hero-content { margin-bottom: 64px; }
                     .hero-visual { display: none; }
                     .navbar { padding: 24px; }
-                    .cta-group { justify-content: center; }
+                    .cta-group { flex-direction: column; gap: 20px; }
+                    .hero-title { font-size: 40px; }
+                    .logo-text { font-size: 16px; letter-spacing: 2px; }
+                }
+
+                @media (max-width: 640px) {
+                    .hero-title { font-size: 32px; }
+                    .hero-subtitle { font-size: 16px; }
+                    .nav-links { display: none; } /* Could add a mobile menu later */
                 }
             `}</style>
         </div>
