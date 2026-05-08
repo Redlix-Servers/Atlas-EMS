@@ -51,9 +51,9 @@ export default function ForgotPasswordPage() {
                 </p>
 
                 {message.text && (
-                    <div style={{ 
-                        padding: '12px 16px', 
-                        borderRadius: '4px', 
+                    <div style={{
+                        padding: '12px 16px',
+                        borderRadius: '4px',
                         marginBottom: '24px',
                         fontSize: '14px',
                         background: message.type === 'success' ? 'rgba(74, 222, 128, 0.1)' : 'rgba(248, 113, 113, 0.1)',
@@ -67,9 +67,9 @@ export default function ForgotPasswordPage() {
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label className="form-label">Work Email</label>
-                        <input 
-                            type="email" 
-                            className="form-input" 
+                        <input
+                            type="email"
+                            className="form-input"
                             placeholder="name@company.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
