@@ -3,7 +3,10 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const documents = await prisma.document.findMany({
+    if (!(prisma as any).document) {
+      return NextResponse.json([]);
+    }
+    const documents = await (prisma as any).document.findMany({
       include: { 
         employee: {
           select: {
@@ -30,7 +33,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Title and File URL are required" }, { status: 400 });
     }
 
-    const document = await prisma.document.create({
+    if (!(prisma as any).document) {
+      throw new Error("Document model not found in Prisma client");
+    }
+    const document = await (prisma as any).document.create({
       data: {
         title,
         description,

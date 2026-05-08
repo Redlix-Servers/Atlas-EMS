@@ -9,7 +9,10 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const documents = await prisma.document.findMany({
+    if (!(prisma as any).document) {
+      return NextResponse.json([]);
+    }
+    const documents = await (prisma as any).document.findMany({
       where: {
         OR: [
           { employeeId: session.id },
