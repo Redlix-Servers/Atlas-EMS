@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Employee {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  password          String
+  company           String
+  fullName          String?
+  role              String?
+  phoneNumber       String?
+  dob               DateTime?
+  upiId             String?
+  fatherName        String?
+  fatherPhoneNumber String?
+  college           String?
+  isGraduated       Boolean  @default(false)
+  profilePhoto      String?
+  isProfileComplete Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  tasks             Task[]
+  documents         Document[]
+  attendances       Attendance[]
+  payrolls          Payroll[]
+}
+
+model Payroll {
+  id          String   @id @default(cuid())
+  amount      Float
+  month       String   // e.g. "May 2024"
+  status      String   @default("Pending") // Pending, Paid, Failed
+  type        String   @default("Salary")  // Salary, Bonus, Stipend
+  paymentDate DateTime?
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Attendance {
+  id          String   @id @default(cuid())
+  date        DateTime @default(now())
+  status      String   @default("Present")
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@unique([employeeId, date]) // Ensure one attendance per day
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  date        DateTime
+  location    String?
+  type        String?  @default("Standard")
+  createdAt   DateTime @default(now())
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  dueDate     DateTime?
+  priority    String   @default("Medium")
+  status      String   @default("Pending")
+  employeeId  String?  // Null means it's a global task for everyone
+  employee    Employee? @relation(fields: [employeeId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Document {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  fileUrl     String
+  employeeId  String?
+  employee    Employee? @relation(fields: [employeeId], references: [id])
+  createdAt   DateTime @default(now())
+}
