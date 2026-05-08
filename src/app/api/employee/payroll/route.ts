@@ -9,7 +9,11 @@ export async function GET() {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const employee = await prisma.employee.findUnique({
+        if (!(prisma as any).employee) {
+            return NextResponse.json({ error: 'Employee service unavailable' }, { status: 503 });
+        }
+
+        const employee = await (prisma as any).employee.findUnique({
             where: { email: session.user.email }
         });
 
