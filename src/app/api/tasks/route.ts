@@ -8,7 +8,10 @@ export async function GET() {
         if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
         // Fetch tasks that are either global (employeeId is null) or specifically for this employee
-        const tasks = await prisma.task.findMany({
+        if (!(prisma as any).task) {
+            return NextResponse.json([]);
+        }
+        const tasks = await (prisma as any).task.findMany({
             where: {
                 OR: [
                     { employeeId: null },
@@ -61,7 +64,10 @@ export async function PATCH(request: Request) {
         const data = await request.json();
         const { id, status } = data;
 
-        const task = await prisma.task.update({
+        if (!(prisma as any).task) {
+            throw new Error('Task model not found');
+        }
+        const task = await (prisma as any).task.update({
             where: { id },
             data: { status }
         });

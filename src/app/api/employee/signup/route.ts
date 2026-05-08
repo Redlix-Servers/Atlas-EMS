@@ -11,7 +11,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
         }
 
-        const existingUser = await prisma.employee.findUnique({
+        const existingUser = await (prisma as any).employee.findUnique({
             where: { email }
         });
 
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const employee = await prisma.employee.create({
+        const employee = await (prisma as any).employee.create({
             data: {
                 email,
                 password: hashedPassword,

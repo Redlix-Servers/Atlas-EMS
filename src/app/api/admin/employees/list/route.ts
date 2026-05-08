@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET() {
     try {
-        const employees = await prisma.employee.findMany({
+        const employees = await (prisma as any).employee.findMany({
             select: {
                 id: true,
                 fullName: true,

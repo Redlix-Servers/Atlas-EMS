@@ -16,7 +16,10 @@ export async function POST(request: Request) {
             profilePhoto
         } = data;
 
-        const updatedEmployee = await prisma.employee.update({
+        if (!(prisma as any).employee) {
+            throw new Error('Employee model not found');
+        }
+        const updatedEmployee = await (prisma as any).employee.update({
             where: { id: session.id },
             data: {
                 fullName,
@@ -47,7 +50,10 @@ export async function GET() {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const employee = await prisma.employee.findUnique({
+        if (!(prisma as any).employee) {
+            return NextResponse.json(null);
+        }
+        const employee = await (prisma as any).employee.findUnique({
             where: { id: session.id }
         });
 

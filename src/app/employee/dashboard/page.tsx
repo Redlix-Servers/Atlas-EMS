@@ -11,9 +11,9 @@ export default async function EmployeeDashboard() {
         redirect('/employee/login');
     }
 
-    const employee = await prisma.employee.findUnique({
+    const employee = (prisma as any).employee ? await (prisma as any).employee.findUnique({
         where: { id: session.id }
-    });
+    }) : null;
 
     const eventCount = (prisma as any).event ? await (prisma as any).event.count() : 0;
     

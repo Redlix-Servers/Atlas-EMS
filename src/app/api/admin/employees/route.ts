@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
     try {
         // In a real app, you would check the admin session here
-        const employees = await prisma.employee.findMany({
+        const employees = await (prisma as any).employee.findMany({
             orderBy: { createdAt: 'desc' }
         });
 

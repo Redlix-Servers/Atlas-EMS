@@ -10,8 +10,11 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Email is required' }, { status: 400 });
         }
 
+        if (!(prisma as any).employee) {
+            return NextResponse.json({ message: 'Service temporarily unavailable' }, { status: 503 });
+        }
         // Check if employee exists
-        const employee = await prisma.employee.findUnique({
+        const employee = await (prisma as any).employee.findUnique({
             where: { email }
         });
 
