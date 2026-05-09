@@ -1,14 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import DashboardShell from '@/components/DashboardShell';
-
-interface Comment {
-    id: string;
-    content: string;
-    employee: { fullName: string };
-    createdAt: string;
-}
 
 interface DailyUpdate {
     id: string;
@@ -18,18 +12,16 @@ interface DailyUpdate {
     createdAt: string;
     employee: {
         fullName: string;
-        role: string;
-        profilePhoto: string;
         company: string;
+        profilePhoto: string;
     };
     likes: any[];
-    comments: Comment[];
+    comments: any[];
 }
 
 export default function NetworkingPage() {
     const [updates, setUpdates] = useState<DailyUpdate[]>([]);
     const [isFetching, setIsFetching] = useState(true);
-    const [commentText, setCommentText] = useState<{ [key: string]: string }>({});
 
     const fetchUpdates = async () => {
         try {
@@ -46,97 +38,55 @@ export default function NetworkingPage() {
         fetchUpdates();
     }, []);
 
-    const handleInteract = async (updateId: string, type: 'like' | 'comment', content?: string) => {
-        try {
-            const res = await fetch('/api/employee/daily-updates/interact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ updateId, type, content })
-            });
-            if (res.ok) {
-                if (type === 'comment') setCommentText({ ...commentText, [updateId]: '' });
-                fetchUpdates();
-            }
-        } catch (err) {
-            console.error('Interaction failed');
-        }
-    };
-
     return (
         <DashboardShell>
             <div className="network-container">
                 <div className="header-section">
-                    <h1 className="title">Networking Hub</h1>
-                    <p className="subtitle">Connect and collaborate with members across the ecosystem.</p>
+                    <h1 className="title">Community Feed</h1>
+                    <p className="subtitle">Discover insights and achievements from the Atlas network.</p>
                 </div>
 
                 {isFetching ? (
-                    <div className="loading-state">Synchronizing organizational updates...</div>
+                    <div className="loading-state">Syncing organizational feed...</div>
                 ) : (
-                    <div className="bento-grid">
-                        {updates.map((update, index) => (
-                            <div 
+                    <div className="blog-grid">
+                        {updates.map((update) => (
+                            <Link 
+                                href={`/employee/dashboard/networking/${update.id}`} 
                                 key={update.id} 
-                                className={`social-card ${index % 3 === 0 ? 'card-wide' : ''} ${index % 5 === 0 ? 'card-tall' : ''}`}
+                                className="blog-card"
                             >
-                                <div className="card-header">
-                                    <div className="user-profile">
-                                        <div className="avatar">
+                                <div className="card-image-placeholder">
+                                    <div className="category-tag">{update.employee.company}</div>
+                                </div>
+                                <div className="card-content">
+                                    <div className="user-strip">
+                                        <div className="mini-avatar">
                                             {update.employee.profilePhoto ? (
                                                 <img src={update.employee.profilePhoto} alt="" />
                                             ) : (
                                                 update.employee.fullName[0].toUpperCase()
                                             )}
                                         </div>
-                                        <div className="user-info">
-                                            <div className="name">{update.employee.fullName}</div>
-                                            <div className="meta">{update.employee.company}</div>
-                                        </div>
+                                        <span className="user-name">{update.employee.fullName}</span>
                                     </div>
-                                    <div className="timestamp">
-                                        {new Date(update.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
-                                    </div>
-                                </div>
-
-                                <div className="card-body">
-                                    <div className="update-section">
-                                        <label>DONE</label>
-                                        <p>{update.contentDone}</p>
-                                    </div>
-                                    <div className="update-section">
-                                        <label>LEARNED</label>
-                                        <p>{update.contentLearned}</p>
-                                    </div>
-                                </div>
-
-                                <div className="card-footer">
-                                    <div className="interaction-row">
-                                        <button 
-                                            className="action-btn like-btn" 
-                                            onClick={() => handleInteract(update.id, 'like')}
-                                        >
+                                    <h3 className="card-title">Daily Update: {new Date(update.createdAt).toLocaleDateString()}</h3>
+                                    <p className="card-excerpt">
+                                        {update.contentDone.substring(0, 100)}...
+                                    </p>
+                                    <div className="card-footer">
+                                        <div className="stat">
                                             <span className="material-symbols-outlined">favorite</span>
-                                            <span>{update.likes.length}</span>
-                                        </button>
-                                        <button className="action-btn">
+                                            {update.likes.length}
+                                        </div>
+                                        <div className="stat">
                                             <span className="material-symbols-outlined">chat_bubble</span>
-                                            <span>{update.comments.length}</span>
-                                        </button>
-                                    </div>
-                                    
-                                    <div className="comment-mini-input">
-                                        <input 
-                                            type="text" 
-                                            placeholder="Reply..."
-                                            value={commentText[update.id] || ''}
-                                            onChange={(e) => setCommentText({ ...commentText, [update.id]: e.target.value })}
-                                            onKeyPress={(e) => {
-                                                if (e.key === 'Enter') handleInteract(update.id, 'comment', commentText[update.id]);
-                                            }}
-                                        />
+                                            {update.comments.length}
+                                        </div>
+                                        <span className="read-more">Read Full Update →</span>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 )}
@@ -144,12 +94,12 @@ export default function NetworkingPage() {
 
             <style jsx>{`
                 .network-container {
-                    padding-bottom: 40px;
-                    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+                    padding-bottom: 60px;
+                    animation: fadeIn 0.8s ease-out;
                 }
 
                 .header-section {
-                    margin-bottom: 48px;
+                    margin-bottom: 40px;
                 }
 
                 .title {
@@ -161,179 +111,142 @@ export default function NetworkingPage() {
 
                 .subtitle {
                     color: #555;
-                    font-size: 14px;
-                    font-weight: 500;
+                    font-size: 15px;
                 }
 
-                .bento-grid {
+                .blog-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                    grid-auto-rows: minmax(280px, auto);
-                    gap: 20px;
+                    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                    gap: 32px;
                 }
 
-                .social-card {
+                .blog-card {
                     background: #111;
                     border: 1px solid #222;
                     display: flex;
                     flex-direction: column;
                     transition: all 0.3s ease;
-                    position: relative;
+                    text-decoration: none;
+                    color: inherit;
                     overflow: hidden;
+                    border-radius: 8px;
                 }
 
-                .social-card:hover {
+                .blog-card:hover {
+                    transform: translateY(-8px);
                     border-color: #333;
-                    transform: translateY(-4px);
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
                 }
 
-                .card-wide {
-                    grid-column: span 2;
+                .card-image-placeholder {
+                    height: 160px;
+                    background: linear-gradient(45deg, #111, #1a1a1a);
+                    position: relative;
+                    border-bottom: 1px solid #222;
                 }
 
-                .card-tall {
-                    grid-row: span 2;
+                .category-tag {
+                    position: absolute;
+                    bottom: 16px;
+                    left: 16px;
+                    background: #7c3aed;
+                    color: #fff;
+                    font-size: 10px;
+                    font-weight: 700;
+                    padding: 4px 10px;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    border-radius: 2px;
                 }
 
-                .card-header {
-                    padding: 20px;
+                .card-content {
+                    padding: 24px;
+                    flex: 1;
                     display: flex;
-                    justify-content: space-between;
-                    align-items: flex-start;
+                    flex-direction: column;
                 }
 
-                .user-profile {
+                .user-strip {
                     display: flex;
-                    gap: 12px;
                     align-items: center;
+                    gap: 10px;
+                    margin-bottom: 16px;
                 }
 
-                .avatar {
-                    width: 32px;
-                    height: 32px;
-                    background: #1a1a1a;
+                .mini-avatar {
+                    width: 24px;
+                    height: 24px;
+                    background: #222;
                     border-radius: 50%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 11px;
+                    font-size: 10px;
                     font-weight: 700;
                     color: #7c3aed;
-                    border: 1px solid #222;
+                    overflow: hidden;
                 }
 
-                .user-info .name {
+                .mini-avatar img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                .user-name {
                     font-size: 13px;
                     font-weight: 600;
-                    color: #fff;
+                    color: #888;
                 }
 
-                .user-info .meta {
-                    font-size: 10px;
-                    color: #444;
+                .card-title {
+                    font-size: 18px;
                     font-weight: 700;
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
+                    margin-bottom: 12px;
+                    color: #fff;
+                    line-height: 1.3;
                 }
 
-                .timestamp {
-                    font-size: 10px;
-                    color: #333;
-                    font-weight: 600;
-                }
-
-                .card-body {
-                    padding: 0 20px 20px;
+                .card-excerpt {
+                    font-size: 14px;
+                    color: #666;
+                    line-height: 1.6;
+                    margin-bottom: 24px;
                     flex: 1;
                 }
 
-                .update-section {
-                    margin-bottom: 16px;
-                }
-
-                .update-section label {
-                    display: block;
-                    font-size: 8px;
-                    font-weight: 800;
-                    color: #333;
-                    margin-bottom: 6px;
-                    letter-spacing: 1px;
-                }
-
-                .update-section p {
-                    font-size: 13px;
-                    color: #888;
-                    line-height: 1.5;
-                    margin: 0;
-                }
-
                 .card-footer {
-                    padding: 16px 20px;
-                    background: rgba(255,255,255,0.01);
-                    border-top: 1px solid #1a1a1a;
-                }
-
-                .interaction-row {
                     display: flex;
+                    align-items: center;
                     gap: 16px;
-                    margin-bottom: 12px;
+                    padding-top: 20px;
+                    border-top: 1px solid #222;
                 }
 
-                .action-btn {
-                    background: none;
-                    border: none;
-                    color: #444;
+                .stat {
                     display: flex;
                     align-items: center;
                     gap: 6px;
-                    font-size: 11px;
-                    font-weight: 700;
-                    cursor: pointer;
-                    transition: color 0.2s;
-                    padding: 0;
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: #444;
                 }
 
-                .action-btn:hover {
-                    color: #888;
-                }
-
-                .action-btn .material-symbols-outlined {
+                .stat .material-symbols-outlined {
                     font-size: 18px;
                 }
 
-                .like-btn:hover {
-                    color: #f43f5e;
-                }
-
-                .comment-mini-input input {
-                    width: 100%;
-                    background: #000;
-                    border: 1px solid #222;
-                    padding: 8px 12px;
-                    color: #fff;
+                .read-more {
+                    margin-left: auto;
                     font-size: 12px;
-                    border-radius: 4px;
-                }
-
-                .comment-mini-input input:focus {
-                    outline: none;
-                    border-color: #7c3aed;
+                    font-weight: 700;
+                    color: #7c3aed;
                 }
 
                 .loading-state {
                     padding: 100px 0;
                     text-align: center;
                     color: #444;
-                    font-size: 13px;
-                    letter-spacing: 1px;
-                }
-
-                @media (max-width: 768px) {
-                    .card-wide, .card-tall {
-                        grid-column: span 1;
-                        grid-row: span 1;
-                    }
                 }
             `}</style>
         </DashboardShell>
