@@ -3,8 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import AdminShell from '@/components/AdminShell';
 
+interface AnalyticsStats {
+    totalUpdates: number;
+    activeEmployees: number;
+    averageEngagement: number;
+    dailyActivity: number[];
+}
+
 export default function AdminAnalyticsPage() {
-    const [stats, setStats] = useState({
+    const [stats, setStats] = useState<AnalyticsStats>({
         totalUpdates: 0,
         activeEmployees: 0,
         averageEngagement: 0,
