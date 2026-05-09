@@ -24,6 +24,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
     const navItems = [
         { name: 'Dashboard', icon: 'grid_view', path: '/admin/dashboard' },
+        { name: 'Daily Updates', icon: 'history_edu', path: '/admin/dashboard/daily-updates' },
         { name: 'Employees', icon: 'badge', path: '/admin/dashboard/employees' },
         { name: 'Events', icon: 'event', path: '/admin/dashboard/events' },
         { name: 'Tasks', icon: 'task', path: '/admin/dashboard/tasks' },

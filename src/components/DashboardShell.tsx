@@ -22,6 +22,8 @@ export default function DashboardShell({
 
     const navItems = [
         { name: 'Overview', icon: 'dashboard', path: '/employee/dashboard' },
+        { name: 'Daily Updates', icon: 'history_edu', path: '/employee/dashboard/daily-updates' },
+        { name: 'Networking', icon: 'groups', path: '/employee/dashboard/networking' },
         { name: 'Attendance', icon: 'pan_tool', path: '/employee/dashboard/attendance' },
         { name: 'Payroll', icon: 'payments', path: '/employee/dashboard/payroll' },
         { name: 'Events', icon: 'event', path: '/employee/dashboard/events' },

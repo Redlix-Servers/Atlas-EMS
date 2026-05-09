@@ -22,11 +22,24 @@ model Employee {
   isGraduated       Boolean  @default(false)
   profilePhoto      String?
   isProfileComplete Boolean  @default(false)
+  address           String?
+  gender            String?
   createdAt         DateTime @default(now())
   tasks             Task[]
   documents         Document[]
   attendances       Attendance[]
   payrolls          Payroll[]
+  dailyUpdates      DailyUpdate[]
+}
+
+model DailyUpdate {
+  id              String   @id @default(cuid())
+  contentDone     String
+  contentExplored String
+  contentLearned  String
+  employeeId      String
+  employee        Employee @relation(fields: [employeeId], references: [id])
+  createdAt       DateTime @default(now())
 }
 
 model Payroll {
