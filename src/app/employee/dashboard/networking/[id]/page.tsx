@@ -98,7 +98,7 @@ export default function UpdateDetailPage() {
                             </div>
                         </div>
                         <div className="post-date">
-                            {new Date(update.createdAt).toLocaleLongDateString ? new Date(update.createdAt).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : new Date(update.createdAt).toDateString()}
+                            {new Date(update.createdAt).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                         </div>
                     </div>
 
