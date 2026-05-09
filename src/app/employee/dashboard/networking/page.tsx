@@ -73,9 +73,12 @@ export default function NetworkingPage() {
                 {isFetching ? (
                     <div className="loading-state">Synchronizing organizational updates...</div>
                 ) : (
-                    <div className="feed-grid">
-                        {updates.map((update) => (
-                            <div key={update.id} className="social-card">
+                    <div className="bento-grid">
+                        {updates.map((update, index) => (
+                            <div 
+                                key={update.id} 
+                                className={`social-card ${index % 3 === 0 ? 'card-wide' : ''} ${index % 5 === 0 ? 'card-tall' : ''}`}
+                            >
                                 <div className="card-header">
                                     <div className="user-profile">
                                         <div className="avatar">
@@ -87,68 +90,50 @@ export default function NetworkingPage() {
                                         </div>
                                         <div className="user-info">
                                             <div className="name">{update.employee.fullName}</div>
-                                            <div className="meta">{update.employee.role} • {update.employee.company}</div>
+                                            <div className="meta">{update.employee.company}</div>
                                         </div>
                                     </div>
                                     <div className="timestamp">
-                                        {new Date(update.createdAt).toLocaleDateString()}
+                                        {new Date(update.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                                     </div>
                                 </div>
 
                                 <div className="card-body">
                                     <div className="update-section">
-                                        <label>ACCOMPLISHMENTS</label>
+                                        <label>DONE</label>
                                         <p>{update.contentDone}</p>
                                     </div>
                                     <div className="update-section">
-                                        <label>EXPLORATIONS</label>
-                                        <p>{update.contentExplored}</p>
-                                    </div>
-                                    <div className="update-section">
-                                        <label>LEARNINGS</label>
+                                        <label>LEARNED</label>
                                         <p>{update.contentLearned}</p>
                                     </div>
                                 </div>
 
-                                <div className="card-actions">
-                                    <button 
-                                        className="action-btn like-btn" 
-                                        onClick={() => handleInteract(update.id, 'like')}
-                                    >
-                                        <span className="material-symbols-outlined">favorite</span>
-                                        <span>{update.likes.length} Likes</span>
-                                    </button>
-                                    <button className="action-btn">
-                                        <span className="material-symbols-outlined">chat_bubble</span>
-                                        <span>{update.comments.length} Comments</span>
-                                    </button>
-                                    <button className="action-btn">
-                                        <span className="material-symbols-outlined">share</span>
-                                        <span>Share</span>
-                                    </button>
-                                </div>
-
-                                <div className="comments-section">
-                                    {update.comments.map((comment) => (
-                                        <div key={comment.id} className="comment-item">
-                                            <span className="comment-user">{comment.employee.fullName}:</span>
-                                            <span className="comment-text">{comment.content}</span>
-                                        </div>
-                                    ))}
+                                <div className="card-footer">
+                                    <div className="interaction-row">
+                                        <button 
+                                            className="action-btn like-btn" 
+                                            onClick={() => handleInteract(update.id, 'like')}
+                                        >
+                                            <span className="material-symbols-outlined">favorite</span>
+                                            <span>{update.likes.length}</span>
+                                        </button>
+                                        <button className="action-btn">
+                                            <span className="material-symbols-outlined">chat_bubble</span>
+                                            <span>{update.comments.length}</span>
+                                        </button>
+                                    </div>
                                     
-                                    <div className="comment-input-wrapper">
+                                    <div className="comment-mini-input">
                                         <input 
                                             type="text" 
-                                            placeholder="Write a comment..."
+                                            placeholder="Reply..."
                                             value={commentText[update.id] || ''}
                                             onChange={(e) => setCommentText({ ...commentText, [update.id]: e.target.value })}
                                             onKeyPress={(e) => {
                                                 if (e.key === 'Enter') handleInteract(update.id, 'comment', commentText[update.id]);
                                             }}
                                         />
-                                        <button onClick={() => handleInteract(update.id, 'comment', commentText[update.id])}>
-                                            <span className="material-symbols-outlined">send</span>
-                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -159,46 +144,63 @@ export default function NetworkingPage() {
 
             <style jsx>{`
                 .network-container {
-                    max-width: 800px;
-                    margin: 0 auto;
-                    animation: fadeIn 0.5s ease-out;
+                    padding-bottom: 40px;
+                    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
                 }
 
                 .header-section {
-                    margin-bottom: 32px;
-                    text-align: center;
+                    margin-bottom: 48px;
                 }
 
                 .title {
-                    font-size: 28px;
-                    font-weight: 600;
-                    letter-spacing: -0.5px;
+                    font-size: 32px;
+                    font-weight: 700;
+                    letter-spacing: -1px;
+                    margin-bottom: 8px;
                 }
 
                 .subtitle {
                     color: #555;
                     font-size: 14px;
+                    font-weight: 500;
                 }
 
-                .feed-grid {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 24px;
+                .bento-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                    grid-auto-rows: minmax(280px, auto);
+                    gap: 20px;
                 }
 
                 .social-card {
                     background: #111;
                     border: 1px solid #222;
-                    border-radius: 8px;
+                    display: flex;
+                    flex-direction: column;
+                    transition: all 0.3s ease;
+                    position: relative;
                     overflow: hidden;
                 }
 
+                .social-card:hover {
+                    border-color: #333;
+                    transform: translateY(-4px);
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                }
+
+                .card-wide {
+                    grid-column: span 2;
+                }
+
+                .card-tall {
+                    grid-row: span 2;
+                }
+
                 .card-header {
-                    padding: 16px 20px;
+                    padding: 20px;
                     display: flex;
                     justify-content: space-between;
-                    align-items: center;
-                    border-bottom: 1px solid #1a1a1a;
+                    align-items: flex-start;
                 }
 
                 .user-profile {
@@ -208,155 +210,130 @@ export default function NetworkingPage() {
                 }
 
                 .avatar {
-                    width: 40px;
-                    height: 40px;
-                    background: #222;
+                    width: 32px;
+                    height: 32px;
+                    background: #1a1a1a;
                     border-radius: 50%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-weight: 600;
+                    font-size: 11px;
+                    font-weight: 700;
                     color: #7c3aed;
-                    overflow: hidden;
-                }
-
-                .avatar img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
+                    border: 1px solid #222;
                 }
 
                 .user-info .name {
-                    font-size: 14px;
+                    font-size: 13px;
                     font-weight: 600;
                     color: #fff;
                 }
 
                 .user-info .meta {
-                    font-size: 11px;
-                    color: #555;
+                    font-size: 10px;
+                    color: #444;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
                 }
 
                 .timestamp {
-                    font-size: 11px;
-                    color: #444;
+                    font-size: 10px;
+                    color: #333;
+                    font-weight: 600;
                 }
 
                 .card-body {
-                    padding: 20px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 16px;
+                    padding: 0 20px 20px;
+                    flex: 1;
+                }
+
+                .update-section {
+                    margin-bottom: 16px;
                 }
 
                 .update-section label {
                     display: block;
-                    font-size: 9px;
+                    font-size: 8px;
                     font-weight: 800;
-                    color: #444;
+                    color: #333;
                     margin-bottom: 6px;
                     letter-spacing: 1px;
                 }
 
                 .update-section p {
-                    font-size: 14px;
-                    color: #bbb;
-                    line-height: 1.6;
+                    font-size: 13px;
+                    color: #888;
+                    line-height: 1.5;
                     margin: 0;
                 }
 
-                .card-actions {
-                    display: flex;
-                    padding: 8px 12px;
+                .card-footer {
+                    padding: 16px 20px;
+                    background: rgba(255,255,255,0.01);
                     border-top: 1px solid #1a1a1a;
-                    border-bottom: 1px solid #1a1a1a;
-                    gap: 8px;
+                }
+
+                .interaction-row {
+                    display: flex;
+                    gap: 16px;
+                    margin-bottom: 12px;
                 }
 
                 .action-btn {
-                    flex: 1;
                     background: none;
                     border: none;
-                    color: #666;
+                    color: #444;
                     display: flex;
                     align-items: center;
-                    justify-content: center;
-                    gap: 8px;
-                    padding: 10px;
-                    font-size: 12px;
-                    font-weight: 600;
+                    gap: 6px;
+                    font-size: 11px;
+                    font-weight: 700;
                     cursor: pointer;
-                    transition: all 0.2s;
-                    border-radius: 4px;
+                    transition: color 0.2s;
+                    padding: 0;
                 }
 
                 .action-btn:hover {
-                    background: #1a1a1a;
-                    color: #fff;
+                    color: #888;
                 }
 
                 .action-btn .material-symbols-outlined {
-                    font-size: 20px;
+                    font-size: 18px;
                 }
 
                 .like-btn:hover {
                     color: #f43f5e;
                 }
 
-                .comments-section {
-                    background: rgba(255,255,255,0.01);
-                    padding: 16px 20px;
-                }
-
-                .comment-item {
-                    font-size: 13px;
-                    margin-bottom: 8px;
-                }
-
-                .comment-user {
-                    font-weight: 600;
-                    color: #888;
-                    margin-right: 8px;
-                }
-
-                .comment-text {
-                    color: #eee;
-                }
-
-                .comment-input-wrapper {
-                    margin-top: 16px;
-                    display: flex;
+                .comment-mini-input input {
+                    width: 100%;
                     background: #000;
-                    border: 1px solid #333;
-                    border-radius: 4px;
-                    overflow: hidden;
-                }
-
-                .comment-input-wrapper input {
-                    flex: 1;
-                    background: none;
-                    border: none;
-                    padding: 10px 14px;
+                    border: 1px solid #222;
+                    padding: 8px 12px;
                     color: #fff;
-                    font-size: 13px;
+                    font-size: 12px;
+                    border-radius: 4px;
                 }
 
-                .comment-input-wrapper input:focus {
+                .comment-mini-input input:focus {
                     outline: none;
-                }
-
-                .comment-input-wrapper button {
-                    background: none;
-                    border: none;
-                    color: #7c3aed;
-                    padding: 0 12px;
-                    cursor: pointer;
+                    border-color: #7c3aed;
                 }
 
                 .loading-state {
                     padding: 100px 0;
                     text-align: center;
                     color: #444;
+                    font-size: 13px;
+                    letter-spacing: 1px;
+                }
+
+                @media (max-width: 768px) {
+                    .card-wide, .card-tall {
+                        grid-column: span 1;
+                        grid-row: span 1;
+                    }
                 }
             `}</style>
         </DashboardShell>
