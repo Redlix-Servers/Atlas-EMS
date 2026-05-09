@@ -6,58 +6,43 @@ import Link from 'next/link';
 export default function Home() {
     return (
         <div className="landing-wrapper">
-            {/* Ambient Background Elements */}
-            <div className="ambient-glow top-right"></div>
-            <div className="ambient-glow bottom-left"></div>
-
             <header className="main-nav">
                 <div className="nav-container">
                     <div className="brand-container">
                         <img src="https://ik.imagekit.io/dypkhqxip/atlasf?updatedAt=1778110387224" alt="Atlas Logo" className="brand-logo" />
-                        <span className="brand-name">ATLAS</span>
+                        <span className="brand-name">Atlas Management</span>
                     </div>
-                    <div className="nav-actions">
-                        <Link href="/employee/login" className="nav-sharp-btn">EMPLOYEE LOGIN</Link>
-                    </div>
+                    <nav className="nav-links">
+                        <Link href="/employee/login" className="nav-link">Employee Login</Link>
+                    </nav>
                 </div>
             </header>
 
             <main className="hero-section">
-                <div className="hero-left-content">
-                    <div className="hero-tag">Enterprise Management Solution</div>
-                    <h1 className="hero-main-title">
-                        Command your <br />
-                        <span className="gradient-text">Workspace</span>
-                    </h1>
-                    <p className="hero-description">
-                        The definitive internal platform for modern organizations. 
-                        Attendance, payroll, and tasks—unified in one intelligent interface.
+                <div className="hero-content">
+                    <span className="hero-tag">Enterprise Resource Platform</span>
+                    <h1 className="hero-title">Efficient systems for <span className="violet">modern organizations</span>.</h1>
+                    <p className="hero-subtitle">
+                        Streamline your workflow with our integrated management tools. 
+                        Access attendance, payroll, and tasks in one unified environment.
                     </p>
-
-                    <div className="portal-grid">
-                        <Link href="/employee/login" className="portal-box employee">
-                            <div className="box-icon">
-                                <span className="material-symbols-outlined">person</span>
-                            </div>
-                            <div className="box-info">
-                                <span className="box-title">Employee Portal</span>
-                                <span className="box-desc">Access your workspace dashboard</span>
-                            </div>
-                            <span className="material-symbols-outlined arrow">arrow_forward</span>
-                        </Link>
-                    </div>
-
-                    <div className="system-status">
-                        <div className="status-dot"></div>
-                        <span className="status-text">Core Systems Operational</span>
+                    <div className="cta-row">
+                        <Link href="/employee/login" className="cta-button">Access Dashboard</Link>
                     </div>
                 </div>
             </main>
 
-            <footer className="landing-footer">
-                <div className="footer-content">
-                    <div className="powered-by">
-                        <span>Powered by</span>
+            <footer className="main-footer">
+                <div className="footer-container">
+                    <div className="footer-info">
+                        <span className="copyright">© 2026 Redlix Systems</span>
+                        <div className="divider"></div>
+                        <Link href="/privacy" className="footer-link">Privacy</Link>
+                        <div className="divider"></div>
+                        <Link href="/terms" className="footer-link">Terms</Link>
+                        <div className="divider"></div>
+                        <Link href="/support" className="footer-link">Support</Link>
+                        <div className="divider"></div>
                         <a href="https://redlix.co.in" target="_blank" rel="noopener noreferrer" className="redlix-link">
                             <img src="https://ik.imagekit.io/dypkhqxip/redlixlogo?updatedAt=1777318254456" alt="Redlix" className="footer-logo" />
                         </a>
@@ -68,38 +53,22 @@ export default function Home() {
             <style jsx>{`
                 .landing-wrapper {
                     min-height: 100vh;
-                    background-color: #000;
-                    color: #fff;
-                    font-family: 'Inter', sans-serif;
+                    background-color: #0a0a0a;
+                    color: #ffffff;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
                     display: flex;
                     flex-direction: column;
-                    position: relative;
-                    overflow: hidden;
                 }
-
-                .ambient-glow {
-                    position: absolute;
-                    width: 600px;
-                    height: 600px;
-                    background: radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, transparent 70%);
-                    filter: blur(80px);
-                    z-index: 1;
-                }
-
-                .top-right { top: -200px; right: -200px; }
-                .bottom-left { bottom: -200px; left: -200px; }
 
                 .main-nav {
-                    padding: 32px 64px;
-                    display: flex;
-                    justify-content: center;
-                    z-index: 10;
+                    padding: 32px 0;
                     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
                 }
 
                 .nav-container {
-                    width: 100%;
-                    max-width: 1200px;
+                    max-width: 1100px;
+                    margin: 0 auto;
+                    padding: 0 24px;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
@@ -107,202 +76,160 @@ export default function Home() {
 
                 .brand-container {
                     display: flex;
+                    flex-direction: row;
                     align-items: center;
                     gap: 12px;
+                    white-space: nowrap;
                 }
 
                 .brand-logo {
-                    width: 28px;
-                    height: 28px;
+                    width: 24px;
+                    height: 24px;
                 }
 
                 .brand-name {
-                    font-size: 16px;
-                    font-weight: 800;
-                    letter-spacing: 4px;
-                    background: linear-gradient(to bottom, #fff, #888);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
+                    font-size: 15px;
+                    font-weight: 500;
+                    color: rgba(255, 255, 255, 0.9);
+                    letter-spacing: -0.2px;
                 }
 
-                .nav-sharp-btn {
-                    background: #fff;
-                    color: #000;
-                    padding: 8px 24px;
-                    font-size: 11px;
-                    font-weight: 800;
-                    letter-spacing: 1px;
+                .nav-link {
+                    font-size: 13px;
+                    color: rgba(255, 255, 255, 0.6);
                     text-decoration: none;
-                    border-radius: 0;
-                    transition: all 0.2s ease;
+                    transition: color 0.2s;
+                    font-weight: 400;
                 }
 
-                .nav-sharp-btn:hover {
-                    background: #7c3aed;
-                    color: #fff;
+                .nav-link:hover {
+                    color: #ffffff;
                 }
 
                 .hero-section {
                     flex: 1;
                     display: flex;
                     align-items: center;
-                    justify-content: flex-start;
-                    padding: 40px 64px;
-                    z-index: 2;
-                    max-width: 1200px;
-                    margin: 0 auto;
-                    width: 100%;
+                    justify-content: center;
+                    padding: 80px 24px;
                 }
 
-                .hero-left-content {
-                    max-width: 600px;
-                    text-align: left;
-                    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+                .hero-content {
+                    max-width: 640px;
+                    text-align: center;
                 }
 
                 .hero-tag {
-                    display: inline-block;
-                    padding: 6px 16px;
-                    background: rgba(124, 58, 237, 0.1);
-                    color: #7c3aed;
-                    border: 1px solid rgba(124, 58, 237, 0.2);
-                    border-radius: 0;
-                    font-size: 11px;
-                    font-weight: 700;
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
-                    margin-bottom: 32px;
-                }
-
-                .hero-main-title {
-                    font-size: clamp(36px, 6vw, 60px);
-                    font-weight: 800;
-                    line-height: 1.1;
-                    margin-bottom: 20px;
-                    letter-spacing: -2px;
-                }
-
-                .gradient-text {
-                    background: linear-gradient(to right, #7c3aed, #a78bfa);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                }
-
-                .hero-description {
-                    font-size: clamp(14px, 1.5vw, 17px);
-                    color: #888;
-                    max-width: 480px;
-                    line-height: 1.6;
-                    margin-bottom: 48px;
-                }
-
-                .portal-grid {
-                    display: grid;
-                    grid-template-columns: 1fr;
-                    gap: 20px;
-                    margin-bottom: 48px;
-                    max-width: 400px;
-                }
-
-                .portal-box {
-                    background: rgba(255, 255, 255, 0.03);
-                    border: 1px solid rgba(255, 255, 255, 0.05);
-                    padding: 18px 24px;
-                    display: flex;
-                    align-items: center;
-                    gap: 16px;
-                    text-decoration: none;
-                    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-                    text-align: left;
-                    position: relative;
-                    overflow: hidden;
-                    border-radius: 0;
-                }
-
-                .portal-box:hover {
-                    background: rgba(255, 255, 255, 0.06);
-                    border-color: rgba(255, 255, 255, 0.1);
-                    transform: translateY(-4px);
-                }
-
-                .portal-box.employee:hover { border-color: rgba(124, 58, 237, 0.4); }
-
-                .box-icon {
-                    width: 48px;
-                    height: 48px;
-                    background: rgba(255, 255, 255, 0.05);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: 0;
-                }
-
-                .box-icon .material-symbols-outlined { font-size: 24px; color: #fff; }
-
-                .box-info { display: flex; flex-direction: column; }
-                .box-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 2px; }
-                .box-desc { font-size: 11px; color: #555; }
-
-                .arrow { font-size: 18px; color: #333; margin-left: auto; transition: transform 0.3s ease; }
-                .portal-box:hover .arrow { transform: translateX(4px); color: #fff; }
-
-                .system-status {
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-start;
-                    gap: 10px;
-                    opacity: 0.5;
-                }
-
-                .status-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
-                .status-text { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
-
-                .landing-footer {
-                    padding: 40px 64px;
-                    display: flex;
-                    justify-content: flex-start;
-                    z-index: 10;
-                    border-top: 1px solid rgba(255, 255, 255, 0.03);
-                    max-width: 1200px;
-                    margin: 0 auto;
-                    width: 100%;
-                }
-
-                .powered-by {
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
                     font-size: 12px;
-                    color: #444;
+                    color: #7c3aed;
                     font-weight: 500;
+                    letter-spacing: 0.5px;
+                    display: block;
+                    margin-bottom: 16px;
+                }
+
+                .hero-title {
+                    font-size: clamp(32px, 5vw, 48px);
+                    font-weight: 500;
+                    line-height: 1.2;
+                    margin-bottom: 24px;
+                    color: #ffffff;
+                    letter-spacing: -0.5px;
+                }
+
+                .violet {
+                    color: #7c3aed;
+                }
+
+                .hero-subtitle {
+                    font-size: 16px;
+                    line-height: 1.6;
+                    color: rgba(255, 255, 255, 0.5);
+                    margin-bottom: 40px;
+                    font-weight: 400;
+                }
+
+                .cta-button {
+                    display: inline-block;
+                    background-color: transparent;
+                    color: #ffffff;
+                    padding: 12px 32px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    text-decoration: none;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    transition: all 0.2s;
+                }
+
+                .cta-button:hover {
+                    background-color: #ffffff;
+                    color: #000000;
+                    border-color: #ffffff;
+                }
+
+                .main-footer {
+                    padding: 64px 0;
+                    border-top: 1px solid rgba(255, 255, 255, 0.05);
+                }
+
+                .footer-container {
+                    max-width: 1100px;
+                    margin: 0 auto;
+                    padding: 0 24px;
+                    display: flex;
+                    justify-content: center;
+                }
+
+                .footer-info {
+                    display: flex;
+                    align-items: center;
+                    gap: 14px;
+                    font-size: 11px;
+                    color: rgba(255, 255, 255, 0.2);
+                    font-weight: 400;
+                }
+
+                .footer-link {
+                    color: rgba(255, 255, 255, 0.4);
+                    text-decoration: none;
+                    transition: color 0.2s;
+                }
+
+                .footer-link:hover {
+                    color: #ffffff;
                 }
 
                 .footer-logo {
-                    height: 20px;
-                    filter: grayscale(1) opacity(0.5);
+                    height: 14px;
+                    filter: grayscale(1) opacity(0.3);
                     transition: all 0.3s ease;
                 }
 
                 .redlix-link:hover .footer-logo {
-                    filter: grayscale(0) opacity(1);
+                    filter: grayscale(0) opacity(0.8);
                 }
 
-                @keyframes fadeInUp {
-                    from { opacity: 0; transform: translateY(20px); }
-                    to { opacity: 1; transform: translateY(0); }
+                .divider {
+                    width: 1px;
+                    height: 12px;
+                    background-color: rgba(255, 255, 255, 0.1);
+                    flex-shrink: 0;
                 }
 
-                @media (max-width: 768px) {
-                    .hero-section { padding: 40px 24px; }
-                    .main-nav { padding: 32px 24px; }
-                    .landing-footer { padding: 32px 24px; }
-                    .hero-left-content { text-align: center; margin: 0 auto; }
-                    .system-status { justify-content: center; }
-                    .portal-grid { margin: 0 auto 48px auto; }
+                @media (max-width: 640px) {
+                    .footer-info {
+                        flex-direction: column;
+                        gap: 12px;
+                        text-align: center;
+                    }
+                    
+                    .divider { display: none; }
+                    
+                    .hero-title {
+                        font-size: 32px;
+                    }
                 }
             `}</style>
         </div>
     );
 }
-}
-

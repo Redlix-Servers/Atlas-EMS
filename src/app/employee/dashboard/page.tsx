@@ -99,31 +99,22 @@ export default async function EmployeeDashboard() {
                 </div>
 
                 {/* Compact Stats Grid */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', marginBottom: '32px' }}>
+                <div className="stat-grid">
                     {stats.map(stat => (
-                        <div key={stat.label} style={{ background: '#111', border: '1px solid #222', padding: '16px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                                <span className="material-symbols-outlined" style={{ color: stat.color, fontSize: '18px' }}>{stat.icon}</span>
-                                <span style={{ color: '#222', fontSize: '9px', fontWeight: 700, letterSpacing: '0.5px' }}>SYNCED</span>
+                        <div key={stat.label} className="stat-card">
+                            <div className="stat-card-header">
+                                <span className="material-symbols-outlined" style={{ color: stat.color }}>{stat.icon}</span>
+                                <span className="stat-sync-label">SYNCED</span>
                             </div>
-                            <div style={{ fontSize: '22px', fontWeight: 600, marginBottom: '2px', color: '#fff' }}>{stat.value}</div>
-                            <div style={{ color: '#555', fontSize: '12px' }}>{stat.label}</div>
+                            <div className="stat-value">{stat.value}</div>
+                            <div className="stat-label">{stat.label}</div>
                         </div>
                     ))}
                 </div>
                 
                 {!employee?.isProfileComplete && (
-                    <div style={{ 
-                        background: 'rgba(248, 113, 113, 0.05)', 
-                        border: '1px solid rgba(248, 113, 113, 0.2)', 
-                        padding: '20px 24px', 
-                        marginBottom: '32px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        gap: '24px'
-                    }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <div className="alert-banner">
+                        <div className="alert-content">
                             <div style={{ 
                                 width: '40px', 
                                 height: '40px', 
@@ -136,10 +127,10 @@ export default async function EmployeeDashboard() {
                                 <span className="material-symbols-outlined" style={{ color: '#f87171', fontSize: '20px' }}>warning</span>
                             </div>
                             <div>
-                                <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#f87171', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                                <h3 className="alert-title">
                                     Urgent: Profile Incomplete
                                 </h3>
-                                <p style={{ color: '#888', fontSize: '13px', margin: 0 }}>
+                                <p className="alert-desc">
                                     Please complete your profile at earliest to ensure seamless access to all organizational features.
                                 </p>
                             </div>

@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
 
@@ -32,8 +33,16 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     ];
 
     return (
-        <div className="dashboard-container">
-            <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`} style={{ background: '#111' }}>
+        <div className={`dashboard-container ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}>
+            {/* Mobile Overlay */}
+            {isMobileMenuOpen && (
+                <div 
+                    className="mobile-overlay" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                />
+            )}
+
+            <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''} ${isMobileMenuOpen ? 'mobile-show' : ''}`} style={{ background: '#111' }}>
                 <div className="sidebar-header">
                     <div className="sidebar-logo">Admin Panel</div>
                     <button className="fold-button" onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -49,6 +58,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                             key={item.name} 
                             href={item.path} 
                             className={`nav-item ${pathname === item.path ? 'active' : ''}`}
+                            onClick={() => setIsMobileMenuOpen(false)}
                             style={{ color: pathname === item.path ? '#7c3aed' : '#888' }}
                         >
                             <div className="nav-icon">
@@ -82,8 +92,19 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
             <div className="main-content">
                 <header className="top-nav">
-                    <div style={{ fontSize: '14px', color: '#888' }}>
-                        System Status: <span style={{ color: '#4ade80' }}>Active</span>
+                    <div className="mobile-brand">
+                        <button 
+                            className="mobile-toggle"
+                            onClick={() => setIsMobileMenuOpen(true)}
+                        >
+                            <span className="material-symbols-outlined">menu</span>
+                        </button>
+                        <span className="brand-name">Atlas</span>
+                    </div>
+                    <div className="top-nav-title">
+                        <span style={{ fontWeight: 500 }}>Admin Portal</span>
+                        <div style={{ width: '1px', height: '12px', background: '#333', margin: '0 12px' }}></div>
+                        <span style={{ color: '#888', fontSize: '13px' }}>{navItems.find(i => i.path === pathname)?.name || 'Overview'}</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                         <span style={{ fontSize: '14px', fontWeight: 500 }}>Admin User</span>
@@ -100,17 +121,25 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                     display: 'flex', 
                     alignItems: 'center', 
                     justifyContent: 'center',
-                    gap: '12px',
+                    gap: '24px',
                     background: 'transparent'
                 }} className="dashboard-footer">
-                    <span style={{ fontSize: '10px', fontWeight: 700, color: '#555', letterSpacing: '1px', textTransform: 'uppercase' }}>Powered by</span>
-                    <a href="https://redlix.co.in" target="_blank" rel="noopener noreferrer" className="footer-logo-link" style={{ display: 'flex' }}>
-                        <img 
-                            src="https://ik.imagekit.io/dypkhqxip/redlixlogo?updatedAt=1777318254456" 
-                            alt="Redlix Logo" 
-                            style={{ height: '16px', objectFit: 'contain', transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)' }}
-                        />
-                    </a>
+                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                        <Link href="/privacy" style={{ fontSize: '10px', color: '#444', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Privacy</Link>
+                        <Link href="/terms" style={{ fontSize: '10px', color: '#444', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Terms</Link>
+                        <Link href="/support" style={{ fontSize: '10px', color: '#444', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Support</Link>
+                    </div>
+                    <div style={{ width: '1px', height: '12px', background: '#222', flexShrink: 0 }}></div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <span style={{ fontSize: '10px', fontWeight: 700, color: '#444', letterSpacing: '1px', textTransform: 'uppercase' }}>Powered by</span>
+                        <a href="https://redlix.co.in" target="_blank" rel="noopener noreferrer" className="footer-logo-link" style={{ display: 'flex' }}>
+                            <img 
+                                src="https://ik.imagekit.io/dypkhqxip/redlixlogo?updatedAt=1777318254456" 
+                                alt="Redlix Logo" 
+                                style={{ height: '14px', objectFit: 'contain', filter: 'grayscale(1)', opacity: 0.5 }}
+                            />
+                        </a>
+                    </div>
                 </footer>
                 <style jsx>{`
                     .footer-logo-link:hover img {

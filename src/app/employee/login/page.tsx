@@ -161,9 +161,9 @@ export default function EmployeeLoginPage() {
 
             <footer className="auth-footer">
                 <div className="auth-footer-left">
-                    <Link href="#" className="auth-footer-link">Privacy Policy</Link>
-                    <Link href="#" className="auth-footer-link">Terms of Service</Link>
-                    <Link href="#" className="auth-footer-link">Support</Link>
+                    <Link href="/privacy" className="auth-footer-link">Privacy</Link>
+                    <Link href="/terms" className="auth-footer-link">Terms</Link>
+                    <Link href="/support" className="auth-footer-link">Support</Link>
                 </div>
                 <div className="auth-footer-right">
                     devhacksender@gamil.com
