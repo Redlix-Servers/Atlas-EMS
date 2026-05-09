@@ -75,3 +75,18 @@ export function CardSkeleton() {
         </div>
     );
 }
+
+export function TableSkeleton() {
+    return (
+        <div style={{ background: '#111', border: '1px solid #222', padding: '24px' }}>
+            <div style={{ display: 'flex', gap: '20px', marginBottom: '24px', borderBottom: '1px solid #222', paddingBottom: '12px' }}>
+                {Array(5).fill(0).map((_, i) => <Skeleton key={i} width="15%" height="10px" />)}
+            </div>
+            {Array(6).fill(0).map((_, i) => (
+                <div key={i} style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
+                    {Array(5).fill(0).map((_, j) => <Skeleton key={j} width="15%" height="12px" />)}
+                </div>
+            ))}
+        </div>
+    );
+}
