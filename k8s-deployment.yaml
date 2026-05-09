@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atlas-deployment
+  labels:
+    app: atlas
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: atlas
+  template:
+    metadata:
+      labels:
+        app: atlas
+    spec:
+      containers:
+      - name: atlas-app
+        image: your-registry/atlas-ems:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: atlas-secrets
+              key: database-url
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: atlas-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: atlas
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
