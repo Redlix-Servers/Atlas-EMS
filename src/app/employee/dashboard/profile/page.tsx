@@ -21,7 +21,9 @@ export default function ProfilePage() {
         college: '',
         isGraduated: false,
         profilePhoto: '',
-        isProfileComplete: false
+        isProfileComplete: false,
+        address: '',
+        gender: ''
     });
     const [sessionInfo, setSessionInfo] = useState({ email: '', company: '' });
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -45,7 +47,9 @@ export default function ProfilePage() {
                         college: data.college || '',
                         isGraduated: data.isGraduated || false,
                         profilePhoto: data.profilePhoto || '',
-                        isProfileComplete: data.isProfileComplete || false
+                        isProfileComplete: data.isProfileComplete || false,
+                        address: data.address || '',
+                        gender: data.gender || ''
                     });
                     
                     if (!data.isProfileComplete) {
@@ -199,6 +203,24 @@ export default function ProfilePage() {
                                     <div className="info-body">
                                         <label>Status</label>
                                         <p>{formData.isGraduated ? 'Graduated' : 'Pursuing'}</p>
+                                    </div>
+                                </div>
+                                <div className="info-card">
+                                    <div className="info-icon">
+                                        <span className="material-symbols-outlined">person</span>
+                                    </div>
+                                    <div className="info-body">
+                                        <label>Gender</label>
+                                        <p>{formData.gender || 'Not provided'}</p>
+                                    </div>
+                                </div>
+                                <div className="info-card">
+                                    <div className="info-icon">
+                                        <span className="material-symbols-outlined">home</span>
+                                    </div>
+                                    <div className="info-body">
+                                        <label>Address</label>
+                                        <p>{formData.address || 'Not provided'}</p>
                                     </div>
                                 </div>
                             </div>
@@ -570,6 +592,42 @@ export default function ProfilePage() {
                         <div className="form-group">
                             <label>College</label>
                             <input type="text" value={formData.college} onChange={(e) => setFormData({...formData, college: e.target.value})} required />
+                        </div>
+                        <div className="form-group">
+                            <label>Graduation Status</label>
+                            <select 
+                                value={formData.isGraduated ? "true" : "false"} 
+                                onChange={(e) => setFormData({...formData, isGraduated: e.target.value === "true"})}
+                                style={{ width: '100%', background: '#1a1a1a', border: '1px solid #222', padding: '12px', color: '#fff', fontSize: '13px' }}
+                            >
+                                <option value="false">Pursuing / Incomplete</option>
+                                <option value="true">Graduated</option>
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label>Gender</label>
+                            <select 
+                                value={formData.gender} 
+                                onChange={(e) => setFormData({...formData, gender: e.target.value})}
+                                style={{ width: '100%', background: '#1a1a1a', border: '1px solid #222', padding: '12px', color: '#fff', fontSize: '13px' }}
+                            >
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label>Father's Name</label>
+                            <input type="text" value={formData.fatherName} onChange={(e) => setFormData({...formData, fatherName: e.target.value})} />
+                        </div>
+                        <div className="form-group">
+                            <label>Father's Phone</label>
+                            <input type="tel" value={formData.fatherPhoneNumber} onChange={(e) => setFormData({...formData, fatherPhoneNumber: e.target.value})} />
+                        </div>
+                        <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                            <label>Full Address</label>
+                            <input type="text" value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} placeholder="House No, Street, City, Pincode" />
                         </div>
                     </div>
 
