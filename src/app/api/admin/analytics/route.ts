@@ -5,37 +5,41 @@ import { getSession } from '@/lib/auth';
 export async function GET() {
     try {
         const session = await getSession();
-        if (!session || session.role !== 'ADMIN') {
+        if (!session || (session.role !== 'ADMIN' && session.email !== process.env.ADMIN_EMAIL)) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         // 1. Total Updates
-        const totalUpdates = await (prisma as any).dailyUpdate.count();
+        const totalUpdates = await (prisma as any).dailyUpdate.count() || 0;
 
         // 2. Total Employees
-        const activeEmployees = await (prisma as any).employee.count();
+        const activeEmployees = await (prisma as any).employee.count() || 0;
 
         // 3. Daily Activity (Last 7 Days)
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-        const updates = await (prisma as any).dailyUpdate.findMany({
-            where: {
-                createdAt: { gte: sevenDaysAgo }
-            },
-            select: { createdAt: true }
-        });
-
-        // Grouping updates by day
         const dailyActivity = Array(7).fill(0);
-        updates.forEach((u: any) => {
-            const dayIndex = 6 - Math.floor((new Date().getTime() - new Date(u.createdAt).getTime()) / (1000 * 60 * 60 * 24));
-            if (dayIndex >= 0 && dayIndex < 7) {
-                dailyActivity[dayIndex]++;
-            }
+        const dates = Array(7).fill(0).map((_, i) => {
+            const d = new Date();
+            d.setDate(d.getDate() - (6 - i));
+            d.setHours(0, 0, 0, 0);
+            return d;
         });
 
-        // 4. Engagement Rate (Updates today / Total Employees)
+        for (let i = 0; i < 7; i++) {
+            const start = dates[i];
+            const end = new Date(start);
+            end.setDate(end.getDate() + 1);
+
+            dailyActivity[i] = await (prisma as any).dailyUpdate.count({
+                where: {
+                    createdAt: {
+                        gte: start,
+                        lt: end
+                    }
+                }
+            });
+        }
+
+        // 4. Engagement Rate
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const updatesToday = await (prisma as any).dailyUpdate.count({
@@ -53,6 +57,7 @@ export async function GET() {
             dailyActivity
         });
     } catch (err) {
+        console.error('Analytics Error:', err);
         return NextResponse.json({ error: 'Failed to fetch analytics' }, { status: 500 });
     }
 }

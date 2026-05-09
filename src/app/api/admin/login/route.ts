@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { login } from '@/lib/auth';
 
 export async function POST(request: Request) {
     try {
@@ -8,7 +9,7 @@ export async function POST(request: Request) {
         const envPassword = process.env.ADMIN_PASSWORD;
 
         if (email === envEmail && password === envPassword) {
-            // In a real app, you'd set a secure cookie here
+            await login({ email, role: 'ADMIN' });
             return NextResponse.json({ success: true });
         }
 
