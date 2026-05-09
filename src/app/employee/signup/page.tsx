@@ -10,7 +10,16 @@ export default function EmployeeSignUpPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [selectedCompany, setSelectedCompany] = useState<any>(null);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const router = useRouter();
+
+    const companies = [
+        { id: 'redlix', name: 'Redlix', logo: 'https://ik.imagekit.io/dypkhqxip/redlixlogo?updatedAt=1777318254456' },
+        { id: 'student-forge', name: 'Student Forge', logo: 'https://ik.imagekit.io/dypkhqxip/sf-next-logo?updatedAt=1772993490660' },
+        { id: 'forge-digital', name: 'Forge Digital Technologies', logo: 'https://ik.imagekit.io/dypkhqxip/Screenshot_2026-03-18_at_10.22.48-removebg-preview.png?updatedAt=1775325233099' },
+        { id: 'cleed-systems', name: 'Cleed Systems', logo: 'https://ik.imagekit.io/dypkhqxip/logo.png?updatedAt=1777320313623' },
+    ];
     const handleGitLabLogin = async () => {
         setIsLoading(true);
         setError('');
@@ -53,7 +62,13 @@ export default function EmployeeSignUpPage() {
         const formData = new FormData(e.currentTarget);
         const email = formData.get('email');
         const password = formData.get('password');
-        const company = formData.get('company');
+        const company = selectedCompany?.id;
+
+        if (!company) {
+            setError('Please select a company');
+            setIsLoading(false);
+            return;
+        }
 
         try {
             const res = await fetch('/api/employee/signup', {
@@ -113,16 +128,93 @@ export default function EmployeeSignUpPage() {
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label className="form-label" htmlFor="company">Company</label>
-                        <select name="company" id="company" className="form-select" required defaultValue="">
-                            <option value="" disabled>Select your company</option>
-                            <option value="redlix">Redlix</option>
-                            <option value="student-forge">Student Forge</option>
-                            <option value="forge-digital">Forge Digital Technologies</option>
-                            <option value="cleed-systems">Cleed Systems</option>
-                            <option value="dhasha-media">Dhasha Media</option>
-                        </select>
+                    <div className="form-group" style={{ position: 'relative' }}>
+                        <label className="form-label">Company</label>
+                        <div 
+                            className="custom-select" 
+                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            style={{ 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'space-between',
+                                cursor: 'pointer',
+                                background: '#000',
+                                border: '1px solid #444',
+                                padding: '10px 12px',
+                                color: selectedCompany ? '#fff' : '#888'
+                            }}
+                        >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                {selectedCompany ? (
+                                    <>
+                                        <img 
+                                            src={selectedCompany.logo} 
+                                            alt="" 
+                                            style={{ 
+                                                height: '16px', 
+                                                width: 'auto', 
+                                                objectFit: 'contain',
+                                                filter: selectedCompany.id === 'forge-digital' ? 'invert(1) grayscale(1) brightness(2)' : 'none'
+                                            }} 
+                                        />
+                                        <span>{selectedCompany.name}</span>
+                                    </>
+                                ) : (
+                                    <span>Select your company</span>
+                                )}
+                            </div>
+                            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                                {isDropdownOpen ? 'expand_less' : 'expand_more'}
+                            </span>
+                        </div>
+
+                        {isDropdownOpen && (
+                            <div className="dropdown-menu" style={{ 
+                                position: 'absolute', 
+                                top: '100%', 
+                                left: 0, 
+                                right: 0, 
+                                background: '#111', 
+                                border: '1px solid #333', 
+                                zIndex: 10,
+                                marginTop: '4px',
+                                maxHeight: '200px',
+                                overflowY: 'auto'
+                            }}>
+                                {companies.map((comp) => (
+                                    <div 
+                                        key={comp.id}
+                                        className="dropdown-item"
+                                        onClick={() => {
+                                            setSelectedCompany(comp);
+                                            setIsDropdownOpen(false);
+                                        }}
+                                        style={{ 
+                                            padding: '10px 12px', 
+                                            display: 'flex', 
+                                            alignItems: 'center', 
+                                            gap: '12px',
+                                            cursor: 'pointer',
+                                            transition: 'background 0.2s'
+                                        }}
+                                        onMouseOver={(e) => e.currentTarget.style.background = '#222'}
+                                        onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
+                                    >
+                                        <img 
+                                            src={comp.logo} 
+                                            alt="" 
+                                            style={{ 
+                                                height: '16px', 
+                                                width: '24px', 
+                                                objectFit: 'contain',
+                                                filter: comp.id === 'forge-digital' ? 'invert(1) grayscale(1) brightness(2)' : 'none'
+                                            }} 
+                                        />
+                                        <span style={{ fontSize: '13px', color: '#eee' }}>{comp.name}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     <div className="form-group">
@@ -171,7 +263,7 @@ export default function EmployeeSignUpPage() {
                     <Link href="/support" className="auth-footer-link">Support</Link>
                 </div>
                 <div className="auth-footer-right">
-                    devhacksender@gamil.com
+                    © 2026 Redlix Systems
                 </div>
             </footer>
         </div>
