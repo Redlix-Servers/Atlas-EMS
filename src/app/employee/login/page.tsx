@@ -166,7 +166,7 @@ export default function EmployeeLoginPage() {
                     <Link href="/support" className="auth-footer-link">Support</Link>
                 </div>
                 <div className="auth-footer-right">
-                    devhacksender@gamil.com
+                    © 2026 Redlix Systems
                 </div>
             </footer>
         </div>

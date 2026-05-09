@@ -84,21 +84,23 @@ export default function PrivacyPage() {
                     </section>
                 </div>
             </main>
-            <footer className="main-footer">
-                <div className="footer-container">
-                    <div className="footer-info">
-                        <span className="copyright">© 2026 Redlix Systems</span>
-                        <div className="divider"></div>
-                        <Link href="/privacy" className="footer-link">Privacy</Link>
-                        <div className="divider"></div>
-                        <Link href="/terms" className="footer-link">Terms</Link>
-                        <div className="divider"></div>
-                        <Link href="/support" className="footer-link">Support</Link>
-                        <div className="divider"></div>
-                        <a href="https://redlix.co.in" target="_blank" rel="noopener noreferrer" className="redlix-link">
-                            <img src="https://ik.imagekit.io/dypkhqxip/redlixlogo?updatedAt=1777318254456" alt="Redlix" className="footer-logo" />
-                        </a>
-                    </div>
+            <footer className="auth-footer">
+                <div className="auth-footer-left">
+                    <Link href="/privacy" className="auth-footer-link">Privacy</Link>
+                    <Link href="/terms" className="auth-footer-link">Terms</Link>
+                    <Link href="/support" className="auth-footer-link">Support</Link>
+                </div>
+                <div className="auth-footer-right" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <span>© 2026 Redlix Systems</span>
+                    <a href="https://redlix.co.in" target="_blank" rel="noopener noreferrer" style={{ display: 'flex' }}>
+                        <img 
+                            src="https://ik.imagekit.io/dypkhqxip/redlixlogo?updatedAt=1777318254456" 
+                            alt="Redlix" 
+                            style={{ height: '14px', filter: 'grayscale(1)', opacity: 0.5, transition: 'all 0.3s' }}
+                            onMouseOver={(e) => { e.currentTarget.style.filter = 'grayscale(0)'; e.currentTarget.style.opacity = '0.8'; }}
+                            onMouseOut={(e) => { e.currentTarget.style.filter = 'grayscale(1)'; e.currentTarget.style.opacity = '0.5'; }}
+                        />
+                    </a>
                 </div>
             </footer>
 
@@ -272,54 +274,6 @@ export default function PrivacyPage() {
                     font-size: 15px;
                 }
 
-                .main-footer {
-                    padding: 64px 0;
-                    border-top: 1px solid rgba(255, 255, 255, 0.05);
-                }
-
-                .footer-container {
-                    max-width: 1100px;
-                    margin: 0 auto;
-                    padding: 0 24px;
-                    display: flex;
-                    justify-content: center;
-                }
-
-                .footer-info {
-                    display: flex;
-                    align-items: center;
-                    gap: 14px;
-                    font-size: 11px;
-                    color: rgba(255, 255, 255, 0.2);
-                    font-weight: 400;
-                }
-
-                .footer-link {
-                    color: rgba(255, 255, 255, 0.4);
-                    text-decoration: none;
-                    transition: color 0.2s;
-                }
-
-                .footer-link:hover {
-                    color: #ffffff;
-                }
-
-                .footer-logo {
-                    height: 14px;
-                    filter: grayscale(1) opacity(0.3);
-                    transition: all 0.3s ease;
-                }
-
-                .redlix-link:hover .footer-logo {
-                    filter: grayscale(0) opacity(0.8);
-                }
-
-                .divider {
-                    width: 1px;
-                    height: 12px;
-                    background-color: rgba(255, 255, 255, 0.1);
-                    flex-shrink: 0;
-                }
 
                 @media (max-width: 960px) {
                     .doc-sidebar { display: none; }

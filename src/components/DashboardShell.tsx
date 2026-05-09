@@ -124,7 +124,7 @@ export default function DashboardShell({
                         </button>
                         <span className="brand-name">Atlas</span>
                     </div>
-                    <div className="top-nav-title">
+                    <div className="top-nav-title" style={{ display: 'flex', alignItems: 'center' }}>
                         <span style={{ color: '#888', fontSize: '13px' }}>{company}</span>
                         <div style={{ width: '1px', height: '12px', background: '#333', margin: '0 12px' }}></div>
                         <span style={{ fontWeight: 500 }}>{navItems.find(i => i.path === pathname)?.name || 'Dashboard'}</span>
@@ -133,7 +133,6 @@ export default function DashboardShell({
                         <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#222', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
                             {userEmail ? userEmail[0].toUpperCase() : '?'}
                         </div>
-                        <span style={{ fontSize: '14px', color: '#888' }}>{company}</span>
                     </div>
                 </header>
                 <main className="dashboard-scroll-area">

@@ -101,7 +101,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                         </button>
                         <span className="brand-name">Atlas</span>
                     </div>
-                    <div className="top-nav-title">
+                    <div className="top-nav-title" style={{ display: 'flex', alignItems: 'center' }}>
                         <span style={{ fontWeight: 500 }}>Admin Portal</span>
                         <div style={{ width: '1px', height: '12px', background: '#333', margin: '0 12px' }}></div>
                         <span style={{ color: '#888', fontSize: '13px' }}>{navItems.find(i => i.path === pathname)?.name || 'Overview'}</span>
