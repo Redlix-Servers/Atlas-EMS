@@ -6,14 +6,14 @@ import { useRouter, usePathname } from 'next/navigation';
 
 export default function DashboardShell({ 
     children, 
-    userEmail, 
-    company,
-    onLogout 
+    userEmail = '', 
+    company = 'Atlas EMS',
+    onLogout = async () => {}
 }: { 
     children: React.ReactNode, 
-    userEmail: string, 
-    company: string,
-    onLogout: () => Promise<void>
+    userEmail?: string, 
+    company?: string,
+    onLogout?: () => Promise<void>
 }) {
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
