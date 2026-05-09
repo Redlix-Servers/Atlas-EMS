@@ -79,6 +79,32 @@ export default function ProfilePage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
+
+        // Strict Validation
+        const requiredFields = [
+            { key: 'fullName', label: 'Full Name' },
+            { key: 'role', label: 'Role' },
+            { key: 'phoneNumber', label: 'Phone Number' },
+            { key: 'dob', label: 'Date of Birth' },
+            { key: 'upiId', label: 'UPI ID' },
+            { key: 'fatherName', label: "Father's Name" },
+            { key: 'fatherPhoneNumber', label: "Father's Phone" },
+            { key: 'college', label: 'College' },
+            { key: 'address', label: 'Full Address' },
+            { key: 'gender', label: 'Gender' },
+            { key: 'profilePhoto', label: 'Profile Photo' }
+        ];
+
+        const missing = requiredFields
+            .filter(field => !formData[field.key as keyof typeof formData])
+            .map(field => field.label);
+
+        if (missing.length > 0) {
+            alert(`You didn't fill these fields: ${missing.join(', ')}. Please fill those to avoid the banning of account.`);
+            setIsLoading(false);
+            return;
+        }
+
         try {
             const res = await fetch('/api/employee/profile', {
                 method: 'POST',
