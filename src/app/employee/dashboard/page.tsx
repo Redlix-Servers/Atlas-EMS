@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+import { StatSkeleton } from '@/components/Skeleton';
 
 export default async function EmployeeDashboard() {
     const session = await getSession();
@@ -10,6 +11,8 @@ export default async function EmployeeDashboard() {
     if (!session) {
         redirect('/employee/login');
     }
+
+    const isLoading = false;
 
     const employee = (prisma as any).employee ? await (prisma as any).employee.findUnique({
         where: { id: session.id }
@@ -98,18 +101,22 @@ export default async function EmployeeDashboard() {
                     <p style={{ color: '#555', fontSize: '13px' }}>Here's what's happening at {session.company} today.</p>
                 </div>
 
-                {/* Compact Stats Grid */}
+                {/* Stat Grid */}
                 <div className="stat-grid">
-                    {stats.map(stat => (
-                        <div key={stat.label} className="stat-card">
-                            <div className="stat-card-header">
-                                <span className="material-symbols-outlined" style={{ color: stat.color }}>{stat.icon}</span>
-                                <span className="stat-sync-label">SYNCED</span>
+                    {isLoading ? (
+                        Array(5).fill(0).map((_, i) => <StatSkeleton key={i} />)
+                    ) : (
+                        stats.map(stat => (
+                            <div key={stat.label} className="stat-card">
+                                <div className="stat-card-header">
+                                    <span className="material-symbols-outlined" style={{ color: stat.color }}>{stat.icon}</span>
+                                    <span className="stat-sync-label">SYNCED</span>
+                                </div>
+                                <div className="stat-value">{stat.value}</div>
+                                <div className="stat-label">{stat.label}</div>
                             </div>
-                            <div className="stat-value">{stat.value}</div>
-                            <div className="stat-label">{stat.label}</div>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </div>
                 
                 {!employee?.isProfileComplete && (

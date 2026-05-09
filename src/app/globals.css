@@ -700,8 +700,79 @@ body {
     color: #f87171;
 }
 
-@media (max-width: 640px) {
-    .admin-stats {
-        grid-template-columns: 1fr !important;
+/* Smooth "Breeze" Animations & Performance */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Global Top Preloader Bar */
+#nprogress {
+    pointer-events: none;
+}
+
+#nprogress .bar {
+    background: #7c3aed;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+}
+
+/* Hardware Acceleration for Shells */
+.sidebar, .main-content, .drawer-sidebar {
+    will-change: transform, width, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+/* Breezy Content Transitions */
+.main-content {
+    animation: content-breeze 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes content-breeze {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
     }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Skeleton Loading Utilities */
+.skeleton {
+    overflow: hidden;
+    position: relative;
+    background: #111;
+}
+
+.skeleton::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.03),
+        transparent
+    );
+    animation: skeleton-sweep 1.5s infinite;
+}
+
+@keyframes skeleton-sweep {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
 }
