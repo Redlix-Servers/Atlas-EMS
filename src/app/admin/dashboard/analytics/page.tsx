@@ -18,14 +18,31 @@ export default function AdminAnalyticsPage() {
         dailyActivity: []
     });
 
+    const [isFetching, setIsFetching] = useState(true);
+
+    const fetchAnalytics = async () => {
+        try {
+            const res = await fetch('/api/admin/analytics');
+            if (res.ok) {
+                const data = await res.json();
+                setStats({
+                    totalUpdates: data.totalUpdates,
+                    activeEmployees: data.activeEmployees,
+                    averageEngagement: data.engagementRate,
+                    dailyActivity: data.dailyActivity
+                });
+            }
+        } catch (err) {
+            console.error('Failed to fetch analytics');
+        } finally {
+            setIsFetching(false);
+        }
+    };
+
     useEffect(() => {
-        // Simulating analytics data fetch
-        setStats({
-            totalUpdates: 1240,
-            activeEmployees: 450,
-            averageEngagement: 85,
-            dailyActivity: [24, 45, 32, 67, 88, 54, 90]
-        });
+        fetchAnalytics();
+        const interval = setInterval(fetchAnalytics, 30000); // Refresh every 30s
+        return () => clearInterval(interval);
     }, []);
 
     return (
