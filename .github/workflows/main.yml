@@ -51,14 +51,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Lowercase Repository Name
+        run: echo "REPO_LOWER=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/atlas-ems:latest
-            ghcr.io/${{ github.repository_owner }}/atlas-ems:${{ github.sha }}
+            ghcr.io/${{ env.REPO_LOWER }}:latest
+            ghcr.io/${{ env.REPO_LOWER }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -78,7 +81,10 @@ jobs:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBECONFIG }}
 
+      - name: Lowercase Repository Name
+        run: echo "REPO_LOWER=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
       - name: Deploy to Cluster
         run: |
-          kubectl set image deployment/atlas-deployment atlas-app=ghcr.io/${{ github.repository_owner }}/atlas-ems:${{ github.sha }}
+          kubectl set image deployment/atlas-deployment atlas-app=ghcr.io/${{ env.REPO_LOWER }}:${{ github.sha }}
           kubectl rollout status deployment/atlas-deployment
