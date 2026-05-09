@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: atlas-app
-        image: your-registry/atlas-ems:latest
+        image: ghcr.io/redlix-servers/atlas-ems:latest
         ports:
         - containerPort: 3000
         env:
