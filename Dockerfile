@@ -3,11 +3,14 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Install dependencies
-COPY package*.json ./
-RUN npm install
+# Install build dependencies for Prisma/Alpine
+RUN apk add --no-cache openssl
 
-# Copy source and build
+# Install dependencies (ignoring scripts to avoid prisma generate failure)
+COPY package*.json ./
+RUN npm install --ignore-scripts
+
+# Copy source, generate prisma, and build
 COPY . .
 RUN npx prisma generate
 RUN npm run build
@@ -17,7 +20,10 @@ FROM node:20-alpine AS runner
 
 WORKDIR /app
 
-ENV NODE_ENV production
+# Ensure openssl is available in runtime
+RUN apk add --no-cache openssl
+
+ENV NODE_ENV=production
 
 # Copy necessary files from builder
 COPY --from=builder /app/next.config.js ./
