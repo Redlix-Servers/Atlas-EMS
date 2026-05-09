@@ -26,6 +26,9 @@ export async function POST(req: Request) {
 
 export async function GET() {
     try {
+        const session = await getSession();
+        if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
         const updates = await (prisma as any).dailyUpdate.findMany({
             include: {
                 employee: {
@@ -34,6 +37,14 @@ export async function GET() {
                         role: true,
                         profilePhoto: true,
                         company: true
+                    }
+                },
+                likes: true,
+                comments: {
+                    include: {
+                        employee: {
+                            select: { fullName: true }
+                        }
                     }
                 }
             },

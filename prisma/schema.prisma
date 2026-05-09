@@ -30,6 +30,8 @@ model Employee {
   attendances       Attendance[]
   payrolls          Payroll[]
   dailyUpdates      DailyUpdate[]
+  likes             Like[]
+  comments          Comment[]
 }
 
 model DailyUpdate {
@@ -39,7 +41,30 @@ model DailyUpdate {
   contentLearned  String
   employeeId      String
   employee        Employee @relation(fields: [employeeId], references: [id])
+  likes           Like[]
+  comments        Comment[]
   createdAt       DateTime @default(now())
+}
+
+model Like {
+  id            String      @id @default(cuid())
+  employeeId    String
+  employee      Employee    @relation(fields: [employeeId], references: [id])
+  dailyUpdateId String
+  dailyUpdate   DailyUpdate @relation(fields: [dailyUpdateId], references: [id])
+  createdAt     DateTime    @default(now())
+
+  @@unique([employeeId, dailyUpdateId]) // One like per user per update
+}
+
+model Comment {
+  id            String      @id @default(cuid())
+  content       String
+  employeeId    String
+  employee      Employee    @relation(fields: [employeeId], references: [id])
+  dailyUpdateId String
+  dailyUpdate   DailyUpdate @relation(fields: [dailyUpdateId], references: [id])
+  createdAt     DateTime    @default(now())
 }
 
 model Payroll {
