@@ -8,6 +8,7 @@ interface AttendanceRecord {
     id: string;
     date: string;
     status: string;
+    createdAt: string;
 }
 
 export default function AttendancePage() {
