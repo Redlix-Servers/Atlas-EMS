@@ -73,6 +73,8 @@ jobs:
     name: Kubernetes Rollout
     needs: container-deployment
     runs-on: ubuntu-latest
+    env:
+      HAS_KUBECONFIG: ${{ secrets.KUBECONFIG != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -80,6 +82,7 @@ jobs:
         uses: azure/setup-kubectl@v3
 
       - name: Set Kubernetes Context
+        if: env.HAS_KUBECONFIG == 'true'
         uses: azure/k8s-set-context@v3
         with:
           method: kubeconfig
@@ -89,6 +92,7 @@ jobs:
         run: echo "REPO_LOWER=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
       - name: Deploy to Cluster
+        if: env.HAS_KUBECONFIG == 'true'
         run: |
           kubectl set image deployment/atlas-deployment atlas-app=ghcr.io/${{ env.REPO_LOWER }}:${{ github.sha }}
           kubectl rollout status deployment/atlas-deployment

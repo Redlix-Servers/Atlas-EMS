@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
     try {
         const session = await getSession();
-        if (!session) {
+        if (!session || !session.id) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
 export async function GET() {
     try {
         const session = await getSession();
-        if (!session) {
+        if (!session || !session.id) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 

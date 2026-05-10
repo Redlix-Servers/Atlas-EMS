@@ -5,10 +5,12 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { StatSkeleton } from '@/components/Skeleton';
 
+import RealTimeAttendance from '@/components/RealTimeAttendance';
+
 export default async function EmployeeDashboard() {
     const session = await getSession();
 
-    if (!session) {
+    if (!session || !session.id) {
         redirect('/employee/login');
     }
 
@@ -100,6 +102,9 @@ export default async function EmployeeDashboard() {
                     </h2>
                     <p style={{ color: '#555', fontSize: '13px' }}>Here's what's happening at {session.company} today.</p>
                 </div>
+
+                {/* Real-time Attendance Status */}
+                <RealTimeAttendance />
 
                 {/* Stat Grid */}
                 <div className="stat-grid">

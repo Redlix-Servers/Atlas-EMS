@@ -129,7 +129,7 @@ export default function AttendancePage() {
                                         </td>
                                         <td style={{ padding: '16px 20px', fontSize: '13px', color: '#888' }}>
                                             <div style={{ fontWeight: 600, color: '#eee' }}>
-                                                {new Date(record.date).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' })}
+                                                {new Date(record.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' })}
                                             </div>
                                             <div style={{ fontSize: '10px', color: '#444' }}>Indian Standard Time (IST)</div>
                                         </td>

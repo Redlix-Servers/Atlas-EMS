@@ -97,6 +97,7 @@ model Event {
   date        DateTime
   location    String?
   type        String?  @default("Standard")
+  company     String?  // Null means global
   createdAt   DateTime @default(now())
 }
 

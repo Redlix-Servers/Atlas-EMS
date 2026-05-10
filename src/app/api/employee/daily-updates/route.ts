@@ -5,7 +5,7 @@ import { getSession } from '@/lib/auth';
 export async function POST(req: Request) {
     try {
         const session = await getSession();
-        if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        if (!session || !session.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
         const { contentDone, contentExplored, contentLearned } = await req.json();
 
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 export async function GET() {
     try {
         const session = await getSession();
-        if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        if (!session || !session.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
         const updates = await (prisma as any).dailyUpdate.findMany({
             include: {

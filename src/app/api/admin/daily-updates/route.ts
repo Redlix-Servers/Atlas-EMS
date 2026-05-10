@@ -1,9 +1,22 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
+        const { searchParams } = new URL(request.url);
+        const company = searchParams.get('company');
+        
+        const where = company ? { 
+            employee: { 
+                company: {
+                    equals: company,
+                    mode: 'insensitive' as any
+                }
+            } 
+        } : {};
+
         const updates = await (prisma as any).dailyUpdate.findMany({
+            where,
             include: {
                 employee: {
                     select: {

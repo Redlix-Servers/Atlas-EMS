@@ -1,17 +1,31 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const company = searchParams.get('company');
+    
+    const where = company ? { 
+        employee: { 
+            company: {
+                equals: company,
+                mode: 'insensitive' as any
+            }
+        } 
+    } : {};
+
     if (!(prisma as any).document) {
       return NextResponse.json([]);
     }
     const documents = await (prisma as any).document.findMany({
+      where,
       include: { 
         employee: {
           select: {
             fullName: true,
-            email: true
+            email: true,
+            company: true
           }
         } 
       },

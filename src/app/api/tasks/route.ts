@@ -2,21 +2,44 @@ import { prisma, refreshPrisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
-        const session = await getSession();
-        if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        const { searchParams } = new URL(request.url);
+        const company = searchParams.get('company');
 
-        // Fetch tasks that are either global (employeeId is null) or specifically for this employee
         if (!(prisma as any).task) {
             return NextResponse.json([]);
         }
-        const tasks = await (prisma as any).task.findMany({
-            where: {
+
+        let where: any = {};
+        if (company) {
+            where = {
                 OR: [
                     { employeeId: null },
-                    { employeeId: session.id }
+                    { employee: { company } }
                 ]
+            };
+        } else {
+            const session = await getSession();
+            if (session && session.role !== 'ADMIN') {
+                where = {
+                    OR: [
+                        { employeeId: null },
+                        { employeeId: session.id }
+                    ]
+                };
+            }
+        }
+
+        const tasks = await (prisma as any).task.findMany({
+            where,
+            include: {
+                employee: {
+                    select: {
+                        fullName: true,
+                        company: true
+                    }
+                }
             },
             orderBy: { createdAt: 'desc' }
         });

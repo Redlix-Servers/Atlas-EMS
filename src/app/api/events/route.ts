@@ -1,12 +1,24 @@
 import { prisma, refreshPrisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
+        const { searchParams } = new URL(request.url);
+        const company = searchParams.get('company');
+
         if (!(prisma as any).event) {
             return NextResponse.json([]);
         }
+
+        const where = company ? {
+            OR: [
+                { company: null },
+                { company: company }
+            ]
+        } : {};
+
         const events = await (prisma as any).event.findMany({
+            where,
             orderBy: { date: 'asc' }
         });
         return NextResponse.json(events);
@@ -18,7 +30,7 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         const data = await request.json();
-        const { title, description, date, location, type } = data;
+        const { title, description, date, location, type, company } = data;
 
         let eventModel = (prisma as any).event;
         
@@ -38,7 +50,8 @@ export async function POST(request: Request) {
                 description,
                 date: new Date(date),
                 location,
-                type
+                type,
+                company: company || null
             }
         });
 
